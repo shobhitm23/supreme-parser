@@ -1,33 +1,26 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
 version: 2.1
-
-# Define a job to be invoked later in a workflow.
 jobs:
-  lint:
-    docker:
-      - image: python:3.9
-    steps:
-      - checkout
-      - run:
-        name: Install dependencies
-        command: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-      - run:
-          name: Run linter
-          command: |
-            pylint app/
   build:
     docker:
-      - image: python:3.9
+      - image: docker:latest
     steps:
       - checkout
       - run:
-          name: "Build Docker Image"
-          command: ./scripts/build.sh
+          name: Install dependencies
+          command: |
+            apk add --no-cache py-pip
+            pip install -r requirements.txt
       - run:
-          name: "Run Docker Image"
-          command: ./scripts/run.sh
+          name: Lint Python code
+          command: |
+            pip install flake8
+            flake8 --exclude=.git,__pycache__,.venv .
+      - run:
+          name: Build Docker image
+          command: docker build -t myapp:latest .
+      - run:
+          name: Run tests
+          command: docker run myapp:latest pytest
 
 # Invoke jobs via workflows
 workflows:
