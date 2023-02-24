@@ -1,9 +1,8 @@
-Rokt Parser
 ===
 
 Please fill out your readme here.
 
-The goal of the Take Home Assessment was to build a Web based parser using Docker.
+The goal is to build a Web based parser using Docker.
 Idea was to parse input text files and provide a response based on the date ranges provided by the User.
 
 To build the web based application, I decided to use FASTAPI Framework - a high performance web framework for building APIs using Python
