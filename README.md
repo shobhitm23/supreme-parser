@@ -1,6 +1,4 @@
-===
-
-Please fill out your readme here.
+# Supreme Parser
 
 The goal is to build a Web based parser using Docker.
 Idea was to parse input text files and provide a response based on the date ranges provided by the User.
