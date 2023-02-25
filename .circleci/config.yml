@@ -18,10 +18,10 @@ jobs:
             flake8 --exclude=.git,__pycache__,.venv .
       - run:
           name: Build Docker image
-          command: docker build -t myapp:latest .
+          command: ./scripts/build.sh
       - run:
           name: Run tests
-          command: docker run myapp:latest pytest
+          command: ./scripts/run.sh
 
 # Invoke jobs via workflows
 workflows:
