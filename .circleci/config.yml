@@ -29,7 +29,7 @@ jobs:
       - image: docker:23.0.0
     steps:
       - checkout
-      - install dependencies
+      - install-dependencies
       - run:
           name: Install and run flake8
           command: |
