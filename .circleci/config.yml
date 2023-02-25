@@ -1,15 +1,13 @@
 version: 2.1
 jobs:
   build:
+    working_directory: /app
     docker:
-      - image: python:3.9
+      - image: docker:23.0.1-git
     steps:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
-      - run:
-          name: Check Docker version
-          command: docker version
       - run:
           name: Install dependencies
           command:
