@@ -42,24 +42,27 @@ async def parse_file(request: Request):
             logger.error("Invalid file format. File must be of .txt format")
             return JSONResponse(
                 content={
-                    "error": "Invalid file format. File must be of .txt format"},
+                    "error": "Invalid file format. File must be of .txt \
+                    format"},
                 status_code=415,
             )
 
         # Check if from and to timestamps are in iso8601 UTC format
         # Possible iso UTC timestamps can be
-        # YYYY-MM-DDThh:mm:ssZ
+        # YYYY-MM-DDThh:mm:ssZ (handled)
         # YYYY-MM-DDThh:mm:ss+00:00
-        # But we're only handling one format at the moment - YYYY-MM-DDThh:mm:ssZ
-        if not date_time_pattern.match(from_time) or not date_time_pattern.match(
+        if not date_time_pattern.match(from_time) or \
+            not date_time_pattern.match(
             to_time
         ):
             logger.error(
-                "Invalid timestamp format. Timestamps must be in iso8601 UTC Format - YYYY-MM-DDThh:mm:ssZ"
+                "Invalid timestamp format. Timestamps must be in iso8601 \
+                    UTC Format - YYYY-MM-DDThh:mm:ssZ"
             )
             return JSONResponse(
                 content={
-                    "error": "Invalid timestamp format. Timestamp must be in iso8601 UTC Format - YYYY-MM-DDThh:mm:ssZ"
+                    "error": "Invalid timestamp format. Timestamp must be in \
+                        iso8601 UTC Format - YYYY-MM-DDThh:mm:ssZ"
                 },
                 status_code=400,
             )
@@ -74,18 +77,21 @@ async def parse_file(request: Request):
                 "Invalid input. Please ensure the time entered is valid")
             return JSONResponse(
                 content={
-                    "error": "Invalid input. Please ensure the time entered is valid"
+                    "error": "Invalid input. Please ensure the time entered \
+                        is valid"
                 },
                 status_code=400,
             )
 
         if from_time > to_time:
             logger.error(
-                "Invalid input. Please ensure 'from' input is earlier than 'to' input"
+                "Invalid input. Please ensure 'from' input is earlier \
+                    than 'to' input"
             )
             return JSONResponse(
                 content={
-                    "error": "Invalid input. Please ensure 'from' input is earlier than 'to' input"
+                    "error": "Invalid input. Please ensure 'from' input \
+                        is earlier than 'to' input"
                 },
                 status_code=400,
             )
@@ -98,18 +104,23 @@ async def parse_file(request: Request):
             elif not os.path.getsize(os.path.join(TESTFILEPATH, filename)):
                 raise ValueError
 
-        except FileNotFoundError as e:
-            logger.error(f"File Not Found error: '/app/test-files/{filename}'")
+        except FileNotFoundError:
+            logger.error(f"File Not Found error: \
+                '/app/test-files/{filename}'")
             return JSONResponse(
                 content={
-                    "error": f"File Not Found error: '/app/test-files/{filename}'"
+                    "error": f"File Not Found error: \
+                        '/app/test-files/{filename}'"
                 },
                 status_code=404,
             )
 
-        except ValueError as e:
+        except ValueError:
             logger.error("File is empty")
-            return JSONResponse(content={"error": "File is empty"}, status_code=204)
+            return JSONResponse(
+                content={"error": "File is empty"},
+                status_code=204
+            )
 
         results = []
 
@@ -122,7 +133,8 @@ async def parse_file(request: Request):
         # Sort results by date and return response
         results.sort(key=lambda x: x["eventTime"])
         return JSONResponse(
-            content=results or [], media_type="application/json", status_code=200
+            content=results or [], media_type="application/json",
+            status_code=200
         )
 
     except ValueError:
@@ -155,6 +167,10 @@ def lines_filter(filename, from_time, to_time):
                 date_time = utc_tz.localize(date_time)
                 # Compare record time with input to append to result
                 if from_time <= date_time <= to_time:
-                    yield {"eventTime": date, "email": email, "sessionId": session_id}
+                    yield {
+                        "eventTime": date,
+                        "email": email,
+                        "sessionId": session_id
+                    }
 
     return result

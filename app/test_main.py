@@ -55,7 +55,8 @@ def test_invalid_timestamps_format():
     )
     assert response.status_code == 400
     assert response.json() == {
-        "error": "Invalid timestamp format. Timestamp must be in iso8601 UTC Format - YYYY-MM-DDThh:mm:ssZ"
+        "error": "Invalid timestamp format. Timestamp must be in \
+            iso8601 UTC Format - YYYY-MM-DDThh:mm:ssZ"
     }
 
 
@@ -87,5 +88,6 @@ def test_file_not_found():
 
     assert response.status_code == 404
     assert response.json() == {
-        "error": "File Not Found error: '/app/test-files/non_existent_file.txt'"
+        "error": "File Not Found error: \
+            '/app/test-files/non_existent_file.txt'"
     }
