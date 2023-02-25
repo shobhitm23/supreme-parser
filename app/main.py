@@ -1,7 +1,10 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from datetime import datetime
-import re, pytz, logging, os.path
+import re
+import pytz
+import logging
+import os.path
 
 app = FastAPI()
 
@@ -14,7 +17,8 @@ file_handler = logging.FileHandler("error.log")
 file_handler.setLevel(logging.ERROR)
 
 # Create a formatter and add it to the file handler
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 file_handler.setFormatter(formatter)
 
 # Add the file handler to the logger
@@ -37,7 +41,8 @@ async def parse_file(request: Request):
         if not filename.endswith(".txt"):
             logger.error("Invalid file format. File must be of .txt format")
             return JSONResponse(
-                content={"error": "Invalid file format. File must be of .txt format"},
+                content={
+                    "error": "Invalid file format. File must be of .txt format"},
                 status_code=415,
             )
 
@@ -65,7 +70,8 @@ async def parse_file(request: Request):
             to_time = datetime.fromisoformat(to_time[:-1] + "+00:00")
 
         except ValueError:
-            logger.error("Invalid input. Please ensure the time entered is valid")
+            logger.error(
+                "Invalid input. Please ensure the time entered is valid")
             return JSONResponse(
                 content={
                     "error": "Invalid input. Please ensure the time entered is valid"
