@@ -1,4 +1,29 @@
 version: 2.1
+
+# Define reusable commands
+commands:
+  install-dependencies:
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache py-pip
+            pip install awscli==1.11.76
+            pip install -r requirements.txt
+
+  build-docker-image:
+    steps:
+      - run:
+          name: Build Docker image
+          command: docker build -t supreme-parser:latest ./
+
+  run-tests:
+    steps:
+      - run:
+          name: Run tests
+          command: docker run -d -v $1:/app/test-files -p 8279:8279 supreme-parser:latest pytest
+
+# Define jobs
 jobs:
   build:
     working_directory: /app
@@ -8,21 +33,23 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --no-cache py-pip
-            pip install awscli==1.11.76
-            pip install -r requirements.txt
-      - run:
-          name: Build Docker image
-          command: docker build -t supreme-parser:latest ./ 
-      - run:
-          name: Run tests
-          command: docker run -d -v $1:/app/test-files -p 8279:8279 supreme-parser:latest pytest
+      - install-dependencies
+      - build-docker-image
 
-# Invoke jobs via workflows
+  test:
+    working_directory: /app
+    docker:
+      - image: docker:23.0.0
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - install-dependencies
+      - run-tests
+
+# Define workflows
 workflows:
   main:
     jobs:
       - build
+      - test
