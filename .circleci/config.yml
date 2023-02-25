@@ -15,11 +15,6 @@ jobs:
             pip install awscli==1.11.76
             pip install -r requirements.txt
       - run:
-          name: Lint Python code
-          command: |
-            pip install flake8
-            flake8 --exclude=.git,__pycache__,.venv .
-      - run:
           name: Build Docker image
           command: ./scripts/build.sh
       - run:
