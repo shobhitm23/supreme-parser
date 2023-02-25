@@ -45,6 +45,7 @@ jobs:
       - setup_remote_docker:
           version: 20.10.14
       - install-dependencies
+      - build-docker-image
       - run-tests
 
 # Define workflows
