@@ -24,6 +24,14 @@ commands:
 
 # Define jobs
 jobs:
+  working_directory: /app
+  lint:
+    docker:
+      - image: docker:23.0.0
+    steps:
+      - checkout
+      - flake8 app/
+
   build:
     working_directory: /app
     docker:
@@ -51,5 +59,6 @@ jobs:
 workflows:
   main:
     jobs:
+      - lint
       - build
       - test
