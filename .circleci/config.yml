@@ -16,10 +16,10 @@ jobs:
             pip install -r requirements.txt
       - run:
           name: Build Docker image
-          command: ./scripts/build.sh
+          command: docker build -t supreme-parser:latest ./ 
       - run:
           name: Run tests
-          command: ./scripts/run.sh
+          command: docker run -d -v $1:/app/test-files -p 8279:8279 supreme-parser:latest pytest
 
 # Invoke jobs via workflows
 workflows:
