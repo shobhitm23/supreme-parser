@@ -9,7 +9,6 @@ commands:
           command: |
             apk add --no-cache py-pip
             pip install awscli==1.11.76
-            pip install -r requirements.txt
 
   build-docker-image:
     steps:
