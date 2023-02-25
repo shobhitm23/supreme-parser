@@ -13,9 +13,8 @@ jobs:
           command: |
             apk add --no-cache \
               py-pip=9.0.0-r1
-            pip install \
-              awscli==1.11.76
-              -r requirements.txt
+            pip install awscli==1.11.76
+            pip install -r requirements.txt
       - run:
           name: Lint Python code
           command: |
