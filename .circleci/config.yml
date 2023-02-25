@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: /app
     docker:
-      - image: docker:latest
+      - image: docker:23.0.0
     steps:
       - checkout
       - setup_remote_docker:
