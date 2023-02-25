@@ -61,6 +61,7 @@ jobs:
 
 # Define workflows
 workflows:
+  version: 2
   lint-build-and-test:
     jobs:
       - lint
