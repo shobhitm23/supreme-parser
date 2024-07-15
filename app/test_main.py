@@ -91,3 +91,5 @@ def test_file_not_found():
         "error": "File Not Found error: \
             '/app/test-files/non_existent_file.txt'"
     }
+
+# Success #
